@@ -9,6 +9,11 @@ import './index.css'
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <LandingPage />,
+  },
+
+  {
+    path: '/login',
     element: <LoginPage />,
   },
 ])

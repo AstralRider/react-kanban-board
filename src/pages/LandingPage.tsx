@@ -1,4 +1,5 @@
 import { AiFillGithub } from 'react-icons/ai'
+import { Link } from 'react-router-dom'
 
 const LandingPage = () => {
   return (
@@ -18,12 +19,12 @@ const LandingPage = () => {
             </div>
           </div>
           <div className='mt-10 flex items-center justify-center gap-x-6'>
-            <a
-              href='#'
+            <Link
+              to={'/login'}
               className='rounded-md bg-gradient-to-r from-orange-500 to-yellow-400 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm'
             >
               Login to get started
-            </a>
+            </Link>
             <a
               href='#'
               className='flex gap-x-1 rounded-md px-3.5 py-2.5 text-sm font-semibold text-gray-700 outline outline-gray-400'
