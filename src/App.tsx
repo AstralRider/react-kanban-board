@@ -1,12 +1,18 @@
 import LandingPage from './pages/LandingPage'
-import Login from './components/Login'
+import { Routes, Route, Router } from 'react-router-dom'
+import LoginPage from './pages/LoginPage'
+import PrivateRoute from './Routes/PrivateRoute'
+import ApplicationPage from './pages/ApplicationPage'
 
 function App() {
   return (
-    <div className=''>
-      {/* <Login /> */}
-      <LandingPage />
-    </div>
+    <Routes>
+      <Route path='/' element={<LandingPage />} />
+      <Route path='login' element={<LoginPage />} />
+      <Route element={<PrivateRoute />}>
+        <Route element={<ApplicationPage />} path='/app' />
+      </Route>
+    </Routes>
   )
 }
 

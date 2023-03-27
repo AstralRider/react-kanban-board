@@ -1,7 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { authTypes } from '../types/types'
 
 const ApplicationPage = () => {
-  return <div>ApplicationPage</div>
+  const { user } = useAuth() as authTypes
+  const navigate = useNavigate()
+
+  //if user is not logged in, redirect to login page
+  useEffect(() => {
+    if (!user?.uid) {
+      navigate('login')
+    }
+  }, [user])
+
+  return <div>If you can see this then you are an authenticated user 🤝</div>
 }
 
 export default ApplicationPage
