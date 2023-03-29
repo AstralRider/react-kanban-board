@@ -14,7 +14,14 @@ const ApplicationPage = () => {
     }
   }, [user])
 
-  return <div>If you can see this then you are an authenticated user 🤝</div>
+  return (
+    <>
+      <div className='flex'>
+        <div className='min-h-screen w-64 flex-none bg-blue-200'>Navigation Shell</div>
+        <div className='min-h-screen grow bg-gray-300'>Application Shell</div>
+      </div>
+    </>
+  )
 }
 
 export default ApplicationPage
