@@ -21,13 +21,13 @@ const LandingPage = () => {
           <div className='mt-10 flex items-center justify-center gap-x-6'>
             <Link
               to={'/login'}
-              className='rounded-md bg-gradient-to-r from-orange-500 to-yellow-400 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm'
+              className='rounded-md bg-gradient-to-r from-orange-500 to-yellow-400 px-3.5 py-2.5 text-sm font-semibold text-white shadow-md'
             >
               Login to get started
             </Link>
             <a
               href='#'
-              className='flex gap-x-1 rounded-md px-3.5 py-2.5 text-sm font-semibold text-gray-700 outline outline-gray-400'
+              className='flex gap-x-1 rounded-md px-3.5 py-2.5 text-sm font-semibold text-gray-700 shadow-md outline outline-gray-400'
             >
               View the code
               <span className='flex items-center' aria-hidden='true'>

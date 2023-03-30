@@ -1,4 +1,5 @@
 import { User as FirebaseUser } from 'firebase/auth'
+import { ReactNode } from 'react'
 
 export type authTypes = {
   googleSignIn: () => Promise<any>
@@ -10,3 +11,11 @@ export type authTypes = {
 export type providerType = {
   children?: React.ReactNode
 }
+
+export type buttonTypes = {
+  subtle?: string
+  filled?: string
+  gradient?: string
+  shadow?: string
+  children: React.ReactNode
+} & React.ButtonHTMLAttributes<HTMLButtonElement>
