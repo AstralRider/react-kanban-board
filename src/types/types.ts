@@ -13,9 +13,11 @@ export type providerType = {
 }
 
 export type buttonTypes = {
-  subtle?: string
-  filled?: string
-  gradient?: string
-  shadow?: string
+  subtle?: boolean
+  filled?: boolean
+  gradient?: boolean
+  shadow?: boolean
+  active?: boolean
+  textCenter?: boolean
   children: React.ReactNode
 } & React.ButtonHTMLAttributes<HTMLButtonElement>
