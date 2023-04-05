@@ -14,6 +14,7 @@ export type providerType = {
 
 export type buttonTypes = {
   subtle?: boolean
+  grey?: boolean
   filled?: boolean
   gradient?: boolean
   shadow?: boolean
