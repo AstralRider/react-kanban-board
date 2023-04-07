@@ -25,6 +25,7 @@ const ApplicationPage = () => {
   return (
     <>
       <div className='gap flex'>
+        {/* Side Nav */}
         <div className='min-h-screen w-64 flex-none bg-gray-200'>
           <div className='mt-5 flex flex-col gap-1'>
             <Button grey active className='mx-2.5 text-blue-500 hover:bg-gray-300'>
@@ -33,6 +34,9 @@ const ApplicationPage = () => {
             <SingleAccordion items={items} />
           </div>
         </div>
+        {/* End Side Nav */}
+
+        {/* Main App Section */}
         <div className='min-h-screen grow bg-gray-300'></div>
       </div>
     </>
