@@ -40,8 +40,8 @@ const ApplicationPage = () => {
             onClick={handleNavClick}
             className={`${
               navOpen
-                ? 'absolute top-20 left-[245px]'
-                : 'absolute top-20 left-[-5px] rotate-180 overflow-hidden'
+                ? 'absolute top-14 left-[245px]'
+                : 'absolute top-14 left-[-5px] rotate-180 overflow-hidden'
             } absolute z-10 cursor-pointer select-none rounded-full bg-gray-200 text-2xl text-gray-600 shadow-lg duration-500  hover:scale-125`}
           />
 
