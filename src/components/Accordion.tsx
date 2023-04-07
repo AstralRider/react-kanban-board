@@ -17,7 +17,10 @@ const SingleAccordion = ({ items }: { items: itemsType[] }) => {
   const renderedList = items.map((item) => {
     return item.content.map((c, i) => {
       return (
-        <p key={i} className='py-1 text-blue-500'>
+        <p
+          key={i}
+          className='cursor-pointer rounded-md px-2.5 py-1 text-blue-600 hover:bg-gray-400 active:translate-y-0.5'
+        >
           {c}
         </p>
       )
@@ -35,7 +38,7 @@ const SingleAccordion = ({ items }: { items: itemsType[] }) => {
       <Button
         onClick={handleAccordionClick}
         className={`w-full bg-transparent hover:bg-gray-300 ${
-          isOpen ? 'w-full bg-gray-300 ' : null
+          isOpen ? 'w-full bg-gray-300 text-blue-600' : 'text-gray-600'
         }`}
         grey
       >

@@ -14,7 +14,7 @@ const Button = ({
 }: buttonTypes) => {
   const buttonClass = classNames(
     rest.className,
-    'flex items-center gap-2 rounded-md px-3.5 py-2 w-11/12',
+    'flex items-center gap-2 rounded-md px-3.5 py-2 w-11/12 min-w-[180px]',
     {
       'bg-slate-50': subtle,
       'bg-gray-200': grey,
