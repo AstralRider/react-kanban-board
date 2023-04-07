@@ -10,7 +10,6 @@ import SingleAccordion from '../components/Accordion'
 const ApplicationPage = () => {
   const { user } = useAuth() as authTypes
   const navigate = useNavigate()
-  const [isOpen, setIsopen] = useState<boolean>(true)
 
   //if user is not logged in, redirect to login page
   useEffect(() => {
@@ -18,24 +17,6 @@ const ApplicationPage = () => {
       navigate('login')
     }
   }, [user])
-
-  useEffect(() => {
-    console.log(isOpen)
-  }, [isOpen])
-
-  const handleAccordionClick = (): void => {
-    setIsopen(!isOpen)
-  }
-
-  const listData = ['Lorem Ipsum', 'Board 2', 'Board 3', 'Board 4']
-
-  const renderedList = listData.map((data, idx) => {
-    return (
-      <p className='py-0.5 text-blue-500' key={idx}>
-        {data}
-      </p>
-    )
-  })
 
   const items = [
     { name: 'Boards', content: ['Board 1', 'Board 2', 'Board 3', 'Board 4', 'Board 5', 'Board 6'] },
@@ -49,26 +30,7 @@ const ApplicationPage = () => {
             <Button grey active className='mx-2.5 text-blue-500 hover:bg-gray-300'>
               <IoIosSettings /> {user?.displayName}
             </Button>
-            <Button
-              onClick={handleAccordionClick}
-              grey
-              className='mx-2.5 text-blue-500 hover:bg-gray-300'
-            >
-              <RiMap2Fill />
-              Boards
-            </Button>
-
             <SingleAccordion items={items} />
-
-            {/* <div>
-              <div
-                className={`mx-2.5 overflow-hidden rounded-md bg-gray-300 px-8 duration-700 ease-in-out ${
-                  isOpen ? 'max-h-40 ' : 'max-h-0'
-                }`}
-              >
-                {renderedList}
-              </div>
-            </div> */}
           </div>
         </div>
         <div className='min-h-screen grow bg-gray-300'></div>
