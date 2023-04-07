@@ -1,11 +1,10 @@
-import { User as FirebaseUser } from 'firebase/auth'
-import { ReactNode } from 'react'
+import { User as FirebaseUser, UserCredential } from 'firebase/auth'
 
 export type authTypes = {
-  googleSignIn: () => Promise<any>
+  googleSignIn: () => Promise<UserCredential | undefined>
   user: FirebaseUser | undefined
   logOut: () => void
-  githubSignIn: () => Promise<any>
+  githubSignIn: () => Promise<UserCredential | undefined>
 }
 
 export type providerType = {
