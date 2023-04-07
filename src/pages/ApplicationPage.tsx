@@ -5,6 +5,7 @@ import { authTypes } from '../types/types'
 import { IoIosSettings } from 'react-icons/io'
 import Button from '../components/Button'
 import { RiMap2Fill } from 'react-icons/ri'
+import SingleAccordion from '../components/Accordion'
 
 const ApplicationPage = () => {
   const { user } = useAuth() as authTypes
@@ -36,11 +37,15 @@ const ApplicationPage = () => {
     )
   })
 
+  const items = [
+    { name: 'Boards', content: ['Board 1', 'Board 2', 'Board 3', 'Board 4', 'Board 5', 'Board 6'] },
+  ]
+
   return (
     <>
       <div className='gap flex'>
         <div className='min-h-screen w-64 flex-none bg-gray-200'>
-          <div className='mt-5 flex flex-col'>
+          <div className='mt-5 flex flex-col gap-1'>
             <Button grey active className='mx-2.5 text-blue-500 hover:bg-gray-300'>
               <IoIosSettings /> {user?.displayName}
             </Button>
@@ -52,13 +57,18 @@ const ApplicationPage = () => {
               <RiMap2Fill />
               Boards
             </Button>
-            <div
-              className={`mx-2.5 overflow-hidden rounded-md bg-gray-300 px-8 duration-700 ease-in-out ${
-                isOpen ? 'max-h-40 ' : 'max-h-0'
-              }`}
-            >
-              {renderedList}
-            </div>
+
+            <SingleAccordion items={items} />
+
+            {/* <div>
+              <div
+                className={`mx-2.5 overflow-hidden rounded-md bg-gray-300 px-8 duration-700 ease-in-out ${
+                  isOpen ? 'max-h-40 ' : 'max-h-0'
+                }`}
+              >
+                {renderedList}
+              </div>
+            </div> */}
           </div>
         </div>
         <div className='min-h-screen grow bg-gray-300'></div>
