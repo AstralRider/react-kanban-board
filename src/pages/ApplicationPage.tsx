@@ -55,8 +55,13 @@ const ApplicationPage = () => {
         {/* End Side Nav */}
 
         {/* Main App Section */}
-        <div className={`min-h-screen grow bg-gray-300`}></div>
+        <div className={`flex min-h-screen grow bg-gray-300`}>
+          <div className='mx-10 my-10 flex h-screen w-full rounded-md bg-gray-200'>
+            <div className='m-5'>Content</div>
+          </div>
+        </div>
       </div>
+      {/* End main container */}
     </>
   )
 }
