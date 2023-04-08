@@ -6,11 +6,14 @@ import { IoIosSettings } from 'react-icons/io'
 import Button from '../components/Button'
 import SingleAccordion from '../components/Accordion'
 import { BsArrowLeftCircle } from 'react-icons/bs'
+import Board from '../dataModel'
+import Column from '../components/Column'
 
 const ApplicationPage = () => {
   const { user } = useAuth() as authTypes
   const navigate = useNavigate()
   const [navOpen, setIsNavOpen] = useState<boolean>(true)
+  const [board, setBoard] = useState<typeof Board>(Board)
 
   //if user is not logged in, redirect to login page
   useEffect(() => {
@@ -26,6 +29,15 @@ const ApplicationPage = () => {
   const items = [
     { name: 'Boards', content: ['Board 1', 'Board 2', 'Board 3', 'Board 4', 'Board 5', 'Board 6'] },
   ]
+
+  const columnList = board.columnOrder.map((columnId) => {
+    const column = board.columns[columnId]
+    const tasks = column.taskIds.map((taskId) => board.cards[taskId])
+
+    console.log(tasks)
+
+    return <Column key={column.id} column={column} cards={tasks} />
+  })
 
   return (
     <>
@@ -57,7 +69,7 @@ const ApplicationPage = () => {
         {/* Main App Section */}
         <div className={`flex min-h-screen grow bg-gray-300`}>
           <div className='mx-10 my-10 flex h-screen w-full rounded-md bg-gray-200'>
-            <div className='m-5'>Content</div>
+            <div className='m-5'>{columnList}</div>
           </div>
         </div>
       </div>
