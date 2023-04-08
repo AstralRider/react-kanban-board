@@ -31,7 +31,7 @@ const SingleAccordion = ({ items }: { items: itemsType[] }) => {
     <div
       className={` ${
         isOpen
-          ? 'mx-2.5 w-11/12 rounded-md bg-gray-300'
+          ? 'mx-2.5 w-11/12 min-w-[120px] rounded-md bg-gray-300'
           : 'mx-2.5 w-11/12 rounded-md delay-300 duration-500 ease-out'
       } `}
     >
