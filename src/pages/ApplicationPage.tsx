@@ -6,14 +6,14 @@ import { IoIosSettings } from 'react-icons/io'
 import Button from '../components/Button'
 import SingleAccordion from '../components/Accordion'
 import { BsArrowLeftCircle } from 'react-icons/bs'
-import Board from '../dataModel'
+import board from '../dataModel'
 import Column from '../components/Column'
 
 const ApplicationPage = () => {
   const { user } = useAuth() as authTypes
   const navigate = useNavigate()
   const [navOpen, setIsNavOpen] = useState<boolean>(true)
-  const [board, setBoard] = useState<typeof Board>(Board)
+  const [boardState, setBoard] = useState<typeof board>(board)
 
   //if user is not logged in, redirect to login page
   useEffect(() => {
@@ -30,9 +30,9 @@ const ApplicationPage = () => {
     { name: 'Boards', content: ['Board 1', 'Board 2', 'Board 3', 'Board 4', 'Board 5', 'Board 6'] },
   ]
 
-  const columnList = board.columnOrder.map((columnId) => {
-    const column = board.columns[columnId]
-    const tasks = column.taskIds.map((taskId) => board.cards[taskId])
+  const columnList = boardState.columnOrder.map((columnId) => {
+    const column = boardState.columns[columnId]
+    const tasks = column.taskIds.map((taskId) => boardState.cards[taskId])
 
     console.log(tasks)
 

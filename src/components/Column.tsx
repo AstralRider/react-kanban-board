@@ -1,14 +1,20 @@
 import { columnType, cardType } from '../dataModel'
+import Task from './Task'
+type cardArray = cardType[]
 
-type cardArrary = {
-  [key: number]: cardType
-}
+const Column = ({ column, cards }: { column: columnType; cards: cardArray }) => {
+  cards.map((task: cardType) => {
+    console.log(task.id)
+  })
 
-const Column = ({ column, cards }: { column: columnType; cards: cardArrary }) => {
   return (
     <div className='h-full w-64 rounded-md bg-gray-100 shadow-md'>
       <div className='pt-3 text-center'>{column.title}</div>
-      <div></div>
+      <div>
+        {cards.map((tasks: cardType) => (
+          <Task key={tasks.id}>{tasks.content}</Task>
+        ))}
+      </div>
     </div>
   )
 }
