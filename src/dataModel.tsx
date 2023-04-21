@@ -29,7 +29,11 @@ const board: Board = {
   cards: {
     'task-1': { id: 'task-1', content: 'Build this board' },
     'task-2': { id: 'task-2', content: 'Test this board' },
-    'task-3': { id: 'task-3', content: 'Deploy this board on the internet' },
+    'task-3': {
+      id: 'task-3',
+      content:
+        'Deploy this board on the internet for the world to see. Just adding more text here to see what it looks like.',
+    },
   },
 
   columns: {

@@ -19,7 +19,7 @@ const SingleAccordion = ({ items }: { items: itemsType[] }) => {
       return (
         <p
           key={i}
-          className='cursor-pointer rounded-md px-2.5 py-1 text-blue-600 hover:bg-gray-400 active:translate-y-0.5'
+          className='cursor-pointer rounded-md px-2.5 py-1 text-blue-600 hover:bg-gray-400/40 active:translate-y-0.5'
         >
           {c}
         </p>

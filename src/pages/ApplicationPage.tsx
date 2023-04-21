@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { DragDropContext } from 'react-beautiful-dnd'
 import { useAuth } from '../context/AuthContext'
 import { authTypes } from '../types/types'
 import { IoIosSettings } from 'react-icons/io'
@@ -34,10 +35,33 @@ const ApplicationPage = () => {
     const column = boardState.columns[columnId]
     const tasks = column.taskIds.map((taskId) => boardState.cards[taskId])
 
-    console.log(tasks)
-
     return <Column key={column.id} column={column} cards={tasks} />
   })
+
+  const onDragEnd = (result: any) => {
+    const { destination, source, draggableId } = result
+
+    if (!destination) return
+
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return
+
+    const column = boardState.columns[source.droppableId]
+
+    const newList = Array.from(column.taskIds)
+    newList.splice(source.index, 1)
+    newList.splice(destination.index, 0, draggableId)
+
+    const newColumn = { ...column, taskIds: newList }
+
+    const updatedState = {
+      ...boardState,
+      columns: {
+        [source.droppableId]: newColumn,
+      },
+    }
+
+    setBoard(updatedState)
+  }
 
   return (
     <>
@@ -69,7 +93,9 @@ const ApplicationPage = () => {
         {/* Main App Section */}
         <div className={`flex min-h-screen grow bg-gray-300`}>
           <div className='mx-10 my-10 flex h-screen w-full rounded-md bg-gray-200'>
-            <div className='m-5'>{columnList}</div>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <div className='m-5'>{columnList}</div>
+            </DragDropContext>
           </div>
         </div>
       </div>
