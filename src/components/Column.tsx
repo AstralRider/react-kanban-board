@@ -5,7 +5,15 @@ import Task from './Task'
 
 type cardArray = cardType[]
 
-const Column = ({ column, cards }: { column: columnType; cards: cardArray }) => {
+const Column = ({
+  column,
+  cards,
+  updateTasks,
+}: {
+  column: columnType
+  cards: cardArray
+  updateTasks: (id: string, updatedContent: string) => void
+}) => {
   return (
     <div className='h-full w-64 rounded-md bg-gray-100 shadow-md'>
       <div className='pt-2 text-center'>{column.title}</div>
@@ -13,7 +21,7 @@ const Column = ({ column, cards }: { column: columnType; cards: cardArray }) => 
         {(provided) => (
           <div className='m-2' ref={provided.innerRef} {...provided.droppableProps}>
             {cards.map((tasks, index) => (
-              <Task key={tasks.id} index={index} task={tasks} />
+              <Task key={tasks.id} index={index} task={tasks} updateTasks={updateTasks} />
             ))}
             <div className='mb-2' />
             {provided.placeholder}

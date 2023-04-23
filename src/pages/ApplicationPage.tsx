@@ -31,11 +31,26 @@ const ApplicationPage = () => {
     { name: 'Boards', content: ['Board 1', 'Board 2', 'Board 3', 'Board 4', 'Board 5', 'Board 6'] },
   ]
 
+  function updateTasks(id: string, value: string): void  {
+    const cards = boardState.cards
+
+    setBoard((boardState) => {
+      return {
+        ...boardState,
+        cards: {
+          ...boardState.cards,
+          [id]: { id, content: value },
+        },
+      }
+    })
+
+  }
+
   const columnList = boardState.columnOrder.map((columnId) => {
     const column = boardState.columns[columnId]
     const tasks = column.taskIds.map((taskId) => boardState.cards[taskId])
 
-    return <Column key={column.id} column={column} cards={tasks} />
+    return <Column updateTasks={updateTasks} key={column.id} column={column} cards={tasks} />
   })
 
   const onDragEnd = (result: any) => {

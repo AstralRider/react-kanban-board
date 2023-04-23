@@ -4,7 +4,7 @@ export type columnType = {
   taskIds: string[]
 }
 
-type Columns = {
+export type Columns = {
   [key: string]: columnType
 }
 
@@ -13,11 +13,11 @@ export type cardType = {
   content: string
 }
 
-type Cards = {
+export type Cards = {
   [key: string]: cardType
 }
 
-type Board = {
+export type Board = {
   name: string
   cards: Cards
   columns: Columns
