@@ -32,7 +32,7 @@ const board: Board = {
     'task-3': {
       id: 'task-3',
       content:
-        'Deploy this board on the internet for the world to see. Just adding more text here to see what it looks like.',
+        'Deploy this board on the internet for the world to see. Just adding more text here to see what it looks like.Deploy this board on the internet for the world to see. Just adding more text here to see what it looks like.Deploy this board on the internet for the world to see. Just adding more text here to see what it looks like.',
     },
   },
 

@@ -31,7 +31,7 @@ const ApplicationPage = () => {
     { name: 'Boards', content: ['Board 1', 'Board 2', 'Board 3', 'Board 4', 'Board 5', 'Board 6'] },
   ]
 
-  function updateTasks(id: string, value: string): void  {
+  function updateTasks(id: string, value: string): void {
     const cards = boardState.cards
 
     setBoard((boardState) => {
@@ -43,7 +43,6 @@ const ApplicationPage = () => {
         },
       }
     })
-
   }
 
   const columnList = boardState.columnOrder.map((columnId) => {
@@ -107,7 +106,7 @@ const ApplicationPage = () => {
 
         {/* Main App Section */}
         <div className={`flex min-h-screen grow bg-gray-300`}>
-          <div className='mx-10 my-10 flex h-screen w-full rounded-md bg-gray-200'>
+          <div className='mx-10 my-10 flex h-screen w-full rounded-md '>
             <DragDropContext onDragEnd={onDragEnd}>
               <div className='m-5'>{columnList}</div>
             </DragDropContext>
