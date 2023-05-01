@@ -15,7 +15,7 @@ const Column = ({
   updateTasks: (id: string, updatedContent: string) => void
 }) => {
   return (
-    <div className='h-full w-64 rounded-md bg-gray-200 shadow-md'>
+    <div className='h-fit w-80 rounded-md bg-gray-100 pb-5 shadow-md'>
       <div className='pt-2 text-center'>{column.title}</div>
       <StrictModeDroppable droppableId={column.id}>
         {(provided) => (

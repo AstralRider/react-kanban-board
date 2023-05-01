@@ -106,7 +106,7 @@ const ApplicationPage = () => {
 
         {/* Main App Section */}
         <div className={`flex min-h-screen grow bg-gray-300`}>
-          <div className='mx-10 my-10 flex h-screen w-full rounded-md '>
+          <div className='mx-10 my-5 flex h-screen w-full rounded-md '>
             <DragDropContext onDragEnd={onDragEnd}>
               <div className='m-5'>{columnList}</div>
             </DragDropContext>
