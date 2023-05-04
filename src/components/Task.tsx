@@ -1,5 +1,5 @@
 import { Draggable } from 'react-beautiful-dnd'
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { cardType } from '../dataModel'
 
@@ -16,7 +16,7 @@ const Task = ({
   const [showTextArea, setShowTextArea] = useState(false)
 
   const editableTextAreaRef = useRef<HTMLTextAreaElement | null>(null)
-  const pRef = useRef<HTMLParagraphElement>(null)
+
   useEffect(() => {
     editableTextAreaRef.current?.addEventListener('focusout', (event: FocusEvent) => {
       setShowTextArea(false)
@@ -77,7 +77,7 @@ const Task = ({
                 }}
               />
             ) : (
-              <div ref={pRef} className='min-h-12 w-11/12 whitespace-normal px-2 text-justify'>
+              <div className='min-h-12 w-11/12 whitespace-normal px-2 text-justify'>
                 {task.content}
               </div>
             )}

@@ -47,34 +47,65 @@ const ApplicationPage = () => {
 
   const columnList = boardState.columnOrder.map((columnId) => {
     const column = boardState.columns[columnId]
-    const tasks = column.taskIds.map((taskId) => boardState.cards[taskId])
+
+    const tasks = column.taskIds?.map((taskId: string) => {
+      return boardState.cards[taskId]
+    })
 
     return <Column updateTasks={updateTasks} key={column.id} column={column} cards={tasks} />
   })
 
   const onDragEnd = (result: any) => {
+    console.log(result)
     const { destination, source, draggableId } = result
 
     if (!destination) return
 
     if (destination.droppableId === source.droppableId && destination.index === source.index) return
 
-    const column = boardState.columns[source.droppableId]
+    //Check where the task comes from
+    const startColumn = boardState.columns[source.droppableId]
+    //Check where it finishes
+    const finishColumn = boardState.columns[destination.droppableId]
 
-    const newList = Array.from(column.taskIds)
-    newList.splice(source.index, 1)
-    newList.splice(destination.index, 0, draggableId)
+    if (startColumn === finishColumn) {
+      const newList = Array.from(startColumn.taskIds)
+      newList.splice(source.index, 1)
+      newList.splice(destination.index, 0, draggableId)
 
-    const newColumn = { ...column, taskIds: newList }
+      const newColumn = { ...startColumn, taskIds: newList }
 
-    const updatedState = {
-      ...boardState,
-      columns: {
-        [source.droppableId]: newColumn,
-      },
+      const updatedState = {
+        ...boardState,
+        columns: {
+          ...boardState.columns,
+          [source.droppableId]: newColumn,
+        },
+      }
+
+      setBoard(updatedState)
+      return
+    } else {
+      const startIds = Array.from(startColumn.taskIds)
+      startIds.splice(source.index, 1)
+
+      const finishIds = Array.from(finishColumn.taskIds)
+      finishIds.splice(destination.index, 0, draggableId)
+
+      const updatedStartCol = { ...startColumn, taskIds: startIds }
+      const updatedFinishCol = { ...finishColumn, taskIds: finishIds }
+
+      const updatedState = {
+        ...boardState,
+        columns: {
+          ...boardState.columns,
+          [source.droppableId]: updatedStartCol,
+          [destination.droppableId]: updatedFinishCol,
+        },
+      }
+
+      setBoard(() => updatedState)
     }
-
-    setBoard(updatedState)
   }
 
   return (
@@ -106,9 +137,9 @@ const ApplicationPage = () => {
 
         {/* Main App Section */}
         <div className={`flex min-h-screen grow bg-gray-300`}>
-          <div className='mx-10 my-5 flex h-screen w-full rounded-md '>
+          <div className='mx-10 my-5 h-screen w-full rounded-md '>
             <DragDropContext onDragEnd={onDragEnd}>
-              <div className='m-5'>{columnList}</div>
+              <div className='m-5 flex gap-4'>{columnList}</div>
             </DragDropContext>
           </div>
         </div>
