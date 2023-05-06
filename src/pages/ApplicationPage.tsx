@@ -56,7 +56,6 @@ const ApplicationPage = () => {
   })
 
   const onDragEnd = (result: any) => {
-    console.log(result)
     const { destination, source, draggableId } = result
 
     if (!destination) return
