@@ -1,4 +1,5 @@
 import { Droppable } from 'react-beautiful-dnd'
+import { IoMdAdd } from 'react-icons/io'
 import { StrictModeDroppable } from './Droppable'
 import { columnType, cardType } from '../dataModel'
 import Task from './Task'
@@ -15,7 +16,7 @@ const Column = ({
   updateTasks: (id: string, updatedContent: string) => void
 }) => {
   return (
-    <div className='h-fit w-80 rounded-md bg-gray-100 pb-5 shadow-md'>
+    <div className='h-fit w-80 rounded-md bg-gray-100  shadow-md'>
       <div className='pt-2 text-center'>{column.title}</div>
       <StrictModeDroppable droppableId={column.id}>
         {(provided) => (
@@ -23,11 +24,16 @@ const Column = ({
             {cards.map((tasks, index) => (
               <Task key={tasks.id} index={index} task={tasks} updateTasks={updateTasks} />
             ))}
+
             <div className='mb-2' />
             {provided.placeholder}
           </div>
         )}
       </StrictModeDroppable>
+      <div className='mt-5 flex h-10 items-center justify-center gap-2 rounded-md bg-gray-200 hover:cursor-pointer hover:bg-gray-300'>
+        <p className='italic text-gray-500'>Add Card</p>
+        <IoMdAdd className='italic text-gray-500' />
+      </div>
     </div>
   )
 }
