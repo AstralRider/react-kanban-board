@@ -54,8 +54,6 @@ const Task = ({
     element.style.height = element.scrollHeight + 'px'
   }
 
-  console.log(content)
-
   const updateText = (id: string, content: string): void => {
     updateTasks(task.id, content)
     editableTextAreaRef.current?.blur()
