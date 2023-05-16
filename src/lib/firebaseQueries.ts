@@ -108,6 +108,21 @@ export async function updateCardContent(
   })
 }
 
+export async function updateTaskIdsBetweenColumns(
+  uid: string,
+  boardId: string,
+  startId: string,
+  startColumn: string[],
+  endId: string,
+  endColumn: string[],
+) {
+  const boardRef = doc(db, 'users', uid, 'boards', boardId)
+  await updateDoc(boardRef, {
+    ['columns.' + startId + '.taskIds']: startColumn,
+    ['columns.' + endId + '.taskIds']: endColumn,
+  })
+}
+
 export async function promiseHandler<T>(promise: Promise<T>) {
   let result
   let err
