@@ -15,13 +15,13 @@ const SingleAccordion = ({ items }: { items: itemsType[] }) => {
   }
 
   const renderedList = items.map((item) => {
-    return item.content.map((c, i) => {
+    return item.content.map((content, idx) => {
       return (
         <p
-          key={i}
+          key={idx}
           className='cursor-pointer rounded-md px-2.5 py-1 text-blue-600 hover:bg-gray-400/40 active:translate-y-0.5'
         >
-          {c}
+          {content}
         </p>
       )
     })
