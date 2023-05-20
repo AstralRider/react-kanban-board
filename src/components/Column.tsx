@@ -11,11 +11,13 @@ const Column = ({
   cards,
   updateTasks,
   deleteTasks,
+  addTasks,
 }: {
   column: columnType
   cards: cardArray
   updateTasks: (id: string, updatedContent: string) => void
   deleteTasks: (cardId: string, colId: string) => void
+  addTasks: (colId: string, content: string) => void
 }) => {
   return (
     <div className='h-fit w-80 rounded-md bg-gray-100  shadow-md'>
@@ -39,7 +41,10 @@ const Column = ({
           </div>
         )}
       </StrictModeDroppable>
-      <div className='mt-5 flex h-10 items-center justify-center gap-2 rounded-md bg-gray-200 hover:cursor-pointer hover:bg-gray-300'>
+      <div
+        onClick={() => addTasks(column.id, 'string')}
+        className='mt-5 flex h-10 items-center justify-center gap-2 rounded-md bg-gray-200 hover:cursor-pointer hover:bg-gray-300'
+      >
         <p className='italic text-gray-500'>Add Card</p>
         <IoMdAdd className='italic text-gray-500' />
       </div>
