@@ -104,7 +104,7 @@ export async function updateCardContent(
 ) {
   const boardRef = doc(db, 'users', uid, 'boards', boardId)
   await updateDoc(boardRef, {
-    ['cards.' + cardId]: content,
+    ['cards.' + cardId + '.content']: content,
   })
 }
 
@@ -123,6 +123,18 @@ export async function updateTaskIdsBetweenColumns(
   })
 }
 
+export async function updateTasksSingleColumn(
+  uid: string,
+  boardId: string,
+  columnId: string,
+  newCol: string[],
+) {
+  const boardRef = doc(db, 'users', uid, 'boards', boardId)
+  await updateDoc(boardRef, {
+    ['columns.' + columnId + '.taskIds']: newCol,
+  })
+}
+
 export async function promiseHandler<T>(promise: Promise<T>) {
   let result
   let err
@@ -131,6 +143,7 @@ export async function promiseHandler<T>(promise: Promise<T>) {
   } catch (error: unknown) {
     if (error instanceof Error) {
       err = error.message
+      console.log(err)
     }
   }
   return { result, err }
