@@ -9,6 +9,7 @@ import {
   deleteDoc,
   writeBatch,
   arrayRemove,
+  arrayUnion,
 } from 'firebase/firestore'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -82,9 +83,6 @@ export async function editBoardName(uid: string, boardId: string, name: string) 
 export async function deleteCard(uid: string, boardId: string, cardId: string, colId: string) {
   const batch = writeBatch(db)
   const boardRef = doc(db, 'users', uid, 'boards', boardId)
-  // await updateDoc(boardRef, {
-  //   ['cards.' + cardId]: deleteField(),
-  // })
   batch.update(boardRef, { ['cards.' + cardId]: deleteField() })
   batch.update(boardRef, {
     ['columns.' + colId + '.taskIds']: arrayRemove(cardId),
@@ -94,13 +92,20 @@ export async function deleteCard(uid: string, boardId: string, cardId: string, c
 
 //add card
 // To do -> add card to taskId's
-export async function addCard(uid: string, boardId: string, content: string) {
+export async function addCard(uid: string, boardId: string, content: string, colId: string) {
+  const batch = writeBatch(db)
   const boardRef = doc(db, 'users', uid, 'boards', boardId)
   const newId = uuidv4()
-  await updateDoc(boardRef, {
-    id: newId,
-    ['cards.' + newId]: content,
+  batch.update(boardRef, {
+    ['cards.' + newId]: {
+      id: newId,
+      content: content,
+    },
   })
+  batch.update(boardRef, {
+    ['columns.' + colId + '.taskIds']: arrayUnion(newId),
+  })
+  await batch.commit()
 }
 
 //update card content

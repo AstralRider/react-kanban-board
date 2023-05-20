@@ -1,10 +1,11 @@
 import { User as FirebaseUser, UserCredential } from 'firebase/auth'
 
 export type authTypes = {
-  googleSignIn: () => Promise<UserCredential | undefined>
+  googleSignIn: () => Promise<{ result: UserCredential | undefined; err: string | undefined }>
   user: FirebaseUser | undefined
   logOut: () => void
-  githubSignIn: () => Promise<UserCredential | undefined>
+  githubSignIn: () => Promise<{ result: UserCredential | undefined; err: string | undefined }>
+  uid: string | undefined
 }
 
 export type providerType = {

@@ -1,6 +1,4 @@
 import { createContext, useState, useEffect, useContext } from 'react'
-import { auth } from '../lib/firebase'
-import { authTypes, providerType } from '../types/types'
 import {
   getAuth,
   signInWithPopup,
@@ -8,12 +6,19 @@ import {
   GithubAuthProvider,
   onAuthStateChanged,
   signOut,
+  UserCredential,
 } from 'firebase/auth'
 import { User as FirebaseUser } from 'firebase/auth'
+import { doc, setDoc, addDoc, collection, writeBatch } from 'firebase/firestore'
+import { auth, db } from '../lib/firebase'
+import { authTypes, providerType } from '../types/types'
+import { promiseHandler } from '../lib/firebaseQueries'
 const AuthenticationContext = createContext<authTypes | null>(null)
 
 export const Provider = ({ children }: providerType) => {
   const [user, setUser] = useState<FirebaseUser | undefined>()
+
+  let uid
 
   //listen for auth state changes
   useEffect(() => {
@@ -28,26 +33,13 @@ export const Provider = ({ children }: providerType) => {
 
   //auth provider logic
   const githubSignIn = async () => {
-    const provider = new GithubAuthProvider()
-    try {
-      const res = await signInWithPopup(auth, provider)
-      return res
-    } catch (e) {
-      //remove alert and handle error correctly later
-      //handle multiple user with same email error
-      alert(e)
-    }
+    const creds = signInWithPopup(auth, new GithubAuthProvider())
+    return promiseHandler<UserCredential>(creds)
   }
   //auth provider logic
   const googleSignIn = async () => {
-    const provider = new GoogleAuthProvider()
-    try {
-      const res = await signInWithPopup(auth, provider)
-      return res
-    } catch (e) {
-      //remove alert and handle error correctly later
-      alert(e)
-    }
+    const cred = signInWithPopup(auth, new GoogleAuthProvider())
+    return promiseHandler<UserCredential>(cred)
   }
 
   //log out logic
@@ -55,7 +47,7 @@ export const Provider = ({ children }: providerType) => {
     signOut(auth)
   }
 
-  let value = { googleSignIn, user, logOut, githubSignIn }
+  let value = { googleSignIn, user, logOut, githubSignIn, uid }
 
   return <AuthenticationContext.Provider value={value}>{children}</AuthenticationContext.Provider>
 }
