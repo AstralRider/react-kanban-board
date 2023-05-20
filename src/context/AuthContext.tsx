@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect, useContext } from 'react'
 import {
-  getAuth,
   signInWithPopup,
   GoogleAuthProvider,
   GithubAuthProvider,
@@ -9,8 +8,7 @@ import {
   UserCredential,
 } from 'firebase/auth'
 import { User as FirebaseUser } from 'firebase/auth'
-import { doc, setDoc, addDoc, collection, writeBatch } from 'firebase/firestore'
-import { auth, db } from '../lib/firebase'
+import { auth } from '../lib/firebase'
 import { authTypes, providerType } from '../types/types'
 import { promiseHandler } from '../lib/firebaseQueries'
 const AuthenticationContext = createContext<authTypes | null>(null)
