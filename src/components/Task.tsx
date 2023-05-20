@@ -1,21 +1,26 @@
 import { Draggable } from 'react-beautiful-dnd'
 import React, { useState, useRef, useEffect } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
+import { FiTrash2 } from 'react-icons/fi'
 import { RxCross2, RxCheck } from 'react-icons/rx'
-import { BsCheck } from 'react-icons/bs'
 import { cardType } from '../dataModel'
 
 const Task = ({
   task,
   index,
   updateTasks,
+  colId,
+  deleteTasks,
 }: {
   task: cardType
   index: number
   updateTasks: (id: string, updatedContent: string) => void
+  deleteTasks: (cardId: string, colId: string) => void
+  colId: string
 }) => {
   const [content, setContent] = useState<string>(task.content)
   const [showTextArea, setShowTextArea] = useState(false)
+  const [error, setError] = useState(false)
 
   const editableTextAreaRef = useRef<HTMLTextAreaElement | null>(null)
 
@@ -35,8 +40,10 @@ const Task = ({
     }
   }, [taskRef])
 
-  const onChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void =>
+  const onChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setContent(event.currentTarget.value)
+    event.currentTarget.value ? setError(false) : setError(true)
+  }
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     if (event.key === 'Enter' || event.key === 'Escape') {
@@ -55,9 +62,12 @@ const Task = ({
   }
 
   const updateText = (id: string, content: string): void => {
-    updateTasks(task.id, content)
-    editableTextAreaRef.current?.blur()
-    setShowTextArea(false)
+    //handle no characters error
+    if (error === false) {
+      updateTasks(task.id, content)
+      editableTextAreaRef.current?.blur()
+      setShowTextArea(false)
+    }
   }
 
   return (
@@ -65,7 +75,6 @@ const Task = ({
       {(provided) => (
         <div ref={taskRef}>
           <div
-            // onClick={() => updateTasks(task.id, 'string')}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
@@ -75,12 +84,15 @@ const Task = ({
               <div className='absolute right-1 rounded-md text-lg  hover:scale-125 hover:bg-gray-200 hover:text-blue-600 '>
                 <AiOutlineEdit onClick={focusTextArea} className='' />
               </div>
+              <div className='absolute right-6 rounded-md text-lg  hover:scale-110 hover:bg-gray-200 hover:text-blue-600 '>
+                <FiTrash2 className='' onClick={() => deleteTasks(task.id, colId)} />
+              </div>
               {showTextArea ? (
                 <textarea
                   onChange={onChangeHandler}
                   onKeyDown={onKeyDown}
                   value={content}
-                  className='text-area relative h-fit w-11/12 resize-none  bg-gray-100 px-2 text-justify '
+                  className='text-area relative h-fit w-10/12 resize-none  bg-gray-100 px-2 text-justify '
                   rows={1}
                   autoFocus
                   id='text'
@@ -90,7 +102,7 @@ const Task = ({
                   }}
                 />
               ) : (
-                <div className='min-h-12 w-11/12 whitespace-normal px-2 text-justify'>
+                <div className='min-h-12 w-10/12 whitespace-normal px-2 text-justify'>
                   {task.content}
                 </div>
               )}
@@ -99,7 +111,11 @@ const Task = ({
           {showTextArea ? (
             <span className='mb-3 flex justify-end gap-1'>
               <a
-                className='rounded-sm outline outline-2 outline-gray-400 drop-shadow-lg transition duration-100 hover:scale-110 hover:cursor-pointer hover:text-blue-600 hover:outline-blue-600'
+                className={
+                  error
+                    ? `rounded-sm outline outline-2 outline-gray-400 drop-shadow-lg hover:cursor-not-allowed`
+                    : `rounded-sm outline outline-2 outline-gray-400 drop-shadow-lg transition duration-100 hover:scale-110 hover:cursor-pointer hover:text-blue-600 hover:outline-blue-600`
+                }
                 onClick={() => updateText(task.id, content)}
               >
                 <RxCheck />

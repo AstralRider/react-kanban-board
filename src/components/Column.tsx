@@ -10,10 +10,12 @@ const Column = ({
   column,
   cards,
   updateTasks,
+  deleteTasks,
 }: {
   column: columnType
   cards: cardArray
   updateTasks: (id: string, updatedContent: string) => void
+  deleteTasks: (cardId: string, colId: string) => void
 }) => {
   return (
     <div className='h-fit w-80 rounded-md bg-gray-100  shadow-md'>
@@ -22,7 +24,14 @@ const Column = ({
         {(provided) => (
           <div className='m-2' ref={provided.innerRef} {...provided.droppableProps}>
             {cards.map((tasks, index) => (
-              <Task key={tasks.id} index={index} task={tasks} updateTasks={updateTasks} />
+              <Task
+                key={tasks.id}
+                index={index}
+                task={tasks}
+                updateTasks={updateTasks}
+                deleteTasks={deleteTasks}
+                colId={column.id}
+              />
             ))}
 
             <div className='mb-2' />
