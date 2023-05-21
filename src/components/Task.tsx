@@ -16,7 +16,6 @@ const Task = ({
   index: number
   updateTasks: (id: string, updatedContent: string) => void
   deleteTasks: (cardId: string, colId: string) => void
-
   colId: string
 }) => {
   const [content, setContent] = useState<string>(task.content)
