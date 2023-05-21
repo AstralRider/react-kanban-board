@@ -1,20 +1,55 @@
+import { DocumentData, doc, onSnapshot } from 'firebase/firestore'
+import {
+  addBoard,
+  addCard,
+  addColumn,
+  deleteBoard,
+  deleteCard,
+  deleteColumn,
+  editBoardName,
+  getBoard,
+  updateCardContent,
+  updateColumnName,
+  updateTaskIdsBetweenColumns,
+  updateTasksSingleColumn,
+} from '../lib/firebaseQueries'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { DragDropContext } from 'react-beautiful-dnd'
-import { useAuth } from '../context/AuthContext'
-import { authTypes } from '../types/types'
-import { IoIosSettings } from 'react-icons/io'
-import Button from '../components/Button'
-import SingleAccordion from '../components/Accordion'
+
 import { BsArrowLeftCircle } from 'react-icons/bs'
-import board from '../dataModel'
+import Button from '../components/Button'
 import Column from '../components/Column'
+import { DragDropContext } from 'react-beautiful-dnd'
+import { IoIosSettings } from 'react-icons/io'
+import SingleAccordion from '../components/Accordion'
+import { authTypes } from '../types/types'
+import { db } from '../lib/firebase'
+import { useAuth } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const ApplicationPage = () => {
   const { user } = useAuth() as authTypes
+
   const navigate = useNavigate()
-  const [navOpen, setIsNavOpen] = useState<boolean>(true)
-  const [boardState, setBoard] = useState<typeof board>(board)
+  const [navOpen, setIsNavOpen] = useState(true)
+  const [boardState, setBoard] = useState<DocumentData>()
+
+  // const subColRef = collection(db, 'users', `${user?.uid}`, 'boards')
+  // let snap = getDocs(subColRef).then((snap) => {
+  //   console.log(snap.docs.map((d) => d.id)[0])
+  // })
+
+  useEffect(() => {
+    const snapshot = onSnapshot(
+      doc(db, 'users', `${user?.uid}`, 'boards', '7s9YSlDnF5RvIv2v4mnf'),
+      (doc) => {
+        setBoard(doc.data())
+      },
+    )
+
+    return () => {
+      snapshot()
+    }
+  }, [])
 
   //if user is not logged in, redirect to login page
   useEffect(() => {
@@ -32,27 +67,38 @@ const ApplicationPage = () => {
   ]
 
   function updateTasks(id: string, value: string): void {
-    const cards = boardState.cards
-
-    setBoard((boardState) => {
-      return {
-        ...boardState,
-        cards: {
-          ...boardState.cards,
-          [id]: { id, content: value },
-        },
-      }
-    })
+    updateCardContent(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', id, value)
   }
 
-  const columnList = boardState.columnOrder.map((columnId) => {
-    const column = boardState.columns[columnId]
+  function deleteTasks(cardId: string, colId: string) {
+    deleteCard(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', cardId, colId)
+  }
 
+  function addTasks(colId: string, content: string) {
+    addCard(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', content, colId)
+  }
+
+  function updateColName(colId: string, content: string) {
+    updateColumnName(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', colId, content)
+  }
+
+  const columnList = boardState?.columnOrder.map((columnId: string) => {
+    const column = boardState.columns[columnId]
     const tasks = column.taskIds?.map((taskId: string) => {
       return boardState.cards[taskId]
     })
 
-    return <Column updateTasks={updateTasks} key={column.id} column={column} cards={tasks} />
+    return (
+      <Column
+        deleteTasks={deleteTasks}
+        updateTasks={updateTasks}
+        addTasks={addTasks}
+        updateColName={updateColName}
+        key={column.id}
+        column={column}
+        cards={tasks}
+      />
+    )
   })
 
   const onDragEnd = (result: any) => {
@@ -62,48 +108,34 @@ const ApplicationPage = () => {
 
     if (destination.droppableId === source.droppableId && destination.index === source.index) return
 
+    const start = source.droppableId
+    const finish = destination.droppableId
     //Check where the task comes from
-    const startColumn = boardState.columns[source.droppableId]
+    const startColumn = boardState?.columns[source.droppableId]
     //Check where it finishes
-    const finishColumn = boardState.columns[destination.droppableId]
-
+    const finishColumn = boardState?.columns[destination.droppableId]
     if (startColumn === finishColumn) {
-      const newList = Array.from(startColumn.taskIds)
+      const newList: string[] = Array.from(startColumn.taskIds)
       newList.splice(source.index, 1)
       newList.splice(destination.index, 0, draggableId)
 
-      const newColumn = { ...startColumn, taskIds: newList }
-
-      const updatedState = {
-        ...boardState,
-        columns: {
-          ...boardState.columns,
-          [source.droppableId]: newColumn,
-        },
-      }
-
-      setBoard(updatedState)
+      updateTasksSingleColumn(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', start, newList)
       return
     } else {
-      const startIds = Array.from(startColumn.taskIds)
+      const startIds: string[] = Array.from(startColumn.taskIds)
       startIds.splice(source.index, 1)
 
-      const finishIds = Array.from(finishColumn.taskIds)
+      const finishIds: string[] = Array.from(finishColumn.taskIds)
       finishIds.splice(destination.index, 0, draggableId)
 
-      const updatedStartCol = { ...startColumn, taskIds: startIds }
-      const updatedFinishCol = { ...finishColumn, taskIds: finishIds }
-
-      const updatedState = {
-        ...boardState,
-        columns: {
-          ...boardState.columns,
-          [source.droppableId]: updatedStartCol,
-          [destination.droppableId]: updatedFinishCol,
-        },
-      }
-
-      setBoard(() => updatedState)
+      updateTaskIdsBetweenColumns(
+        `${user?.uid}`,
+        '7s9YSlDnF5RvIv2v4mnf',
+        start,
+        startIds,
+        finish,
+        finishIds,
+      )
     }
   }
 
@@ -135,10 +167,14 @@ const ApplicationPage = () => {
         {/* End Side Nav */}
 
         {/* Main App Section */}
+
         <div className={`flex min-h-screen grow bg-gray-300`}>
           <div className='mx-10 my-5 h-screen w-full rounded-md '>
             <DragDropContext onDragEnd={onDragEnd}>
-              <div className='m-5 flex gap-4'>{columnList}</div>
+              <div className='m-5 flex gap-4'>
+                {columnList}
+                <div>Add Col</div>
+              </div>
             </DragDropContext>
           </div>
         </div>
