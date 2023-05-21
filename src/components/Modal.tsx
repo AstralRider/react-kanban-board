@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import React from 'react'
 
@@ -8,11 +8,15 @@ export default function MyModal({
   setIsOpen,
   colId,
   addTasks,
+  updateColName,
+  children,
 }: {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   colId: string
-  addTasks: (colId: string, content: string) => void
+  addTasks?: (colId: string, content: string) => void
+  updateColName?: (colId: string, content: string) => void
+  children: React.ReactNode
 }) {
   const [content, setContent] = useState<string>('')
   const [error, setError] = useState(true)
@@ -27,7 +31,11 @@ export default function MyModal({
   }
 
   const save = () => {
-    addTasks(colId, content)
+    if (addTasks) {
+      addTasks(colId, content)
+    } else if (updateColName) {
+      updateColName(colId, content)
+    }
     setIsOpen(false)
     setContent('')
   }
@@ -61,7 +69,7 @@ export default function MyModal({
               >
                 <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
                   <Dialog.Title as='h3' className='text-lg font-medium leading-6 text-gray-900'>
-                    Add your text here!
+                    {children}
                   </Dialog.Title>
                   <div className='mt-2'>
                     <textarea
@@ -69,7 +77,7 @@ export default function MyModal({
                       onChange={onChangeHandler}
                       className='w-11/12 resize-none rounded-md p-1 text-sm text-gray-700 outline outline-2 outline-gray-400 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1'
                       rows={5}
-                      placeholder='Add some text here to add a new card!'
+                      placeholder='Update your text here!'
                     />
                   </div>
                   <div className='mt-4'>
