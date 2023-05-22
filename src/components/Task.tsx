@@ -1,8 +1,9 @@
-import { Draggable } from 'react-beautiful-dnd'
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { RxCheck, RxCross2 } from 'react-icons/rx'
+
 import { AiOutlineEdit } from 'react-icons/ai'
+import { Draggable } from 'react-beautiful-dnd'
 import { FiTrash2 } from 'react-icons/fi'
-import { RxCross2, RxCheck } from 'react-icons/rx'
 import { cardType } from '../dataModel'
 
 const Task = ({
@@ -92,7 +93,7 @@ const Task = ({
                   onChange={onChangeHandler}
                   onKeyDown={onKeyDown}
                   value={content}
-                  className='text-area relative h-fit w-10/12 resize-none  bg-gray-100 px-2 text-justify '
+                  className='text-area relative h-fit w-10/12 resize-none  bg-gray-100 px-2 text-left '
                   rows={1}
                   autoFocus
                   id='text'
@@ -102,7 +103,7 @@ const Task = ({
                   }}
                 />
               ) : (
-                <div className='min-h-12 w-10/12 whitespace-normal px-2 text-justify'>
+                <div className='min-h-12 w-10/12 whitespace-normal px-2 text-left'>
                   {task.content}
                 </div>
               )}
