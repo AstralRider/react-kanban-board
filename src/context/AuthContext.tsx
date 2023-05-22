@@ -1,16 +1,18 @@
-import { createContext, useState, useEffect, useContext } from 'react'
 import {
-  signInWithPopup,
-  GoogleAuthProvider,
   GithubAuthProvider,
-  onAuthStateChanged,
-  signOut,
+  GoogleAuthProvider,
   UserCredential,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
 } from 'firebase/auth'
+import { authTypes, providerType } from '../types/types'
+import { createContext, useContext, useEffect, useState } from 'react'
+
 import { User as FirebaseUser } from 'firebase/auth'
 import { auth } from '../lib/firebase'
-import { authTypes, providerType } from '../types/types'
-import { promiseHandler } from '../lib/firebaseQueries'
+import { promiseHandler } from '../lib/FirebaseQueries'
+
 const AuthenticationContext = createContext<authTypes | null>(null)
 
 export const Provider = ({ children }: providerType) => {
