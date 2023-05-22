@@ -9,13 +9,15 @@ export default function MyModal({
   colId,
   addTasks,
   updateColName,
+  createColumn,
   children,
 }: {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  colId: string
+  colId?: string
   addTasks?: (colId: string, content: string) => void
   updateColName?: (colId: string, content: string) => void
+  createColumn?: (colName: string) => void
   children: React.ReactNode
 }) {
   const [content, setContent] = useState<string>('')
@@ -32,9 +34,11 @@ export default function MyModal({
 
   const save = () => {
     if (addTasks) {
-      addTasks(colId, content)
+      addTasks(colId!, content)
     } else if (updateColName) {
-      updateColName(colId, content)
+      updateColName(colId!, content)
+    } else if (createColumn) {
+      createColumn(content)
     }
     setIsOpen(false)
     setContent('')
@@ -77,7 +81,7 @@ export default function MyModal({
                       onChange={onChangeHandler}
                       className='w-11/12 resize-none rounded-md p-1 text-sm text-gray-700 outline outline-2 outline-gray-400 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1'
                       rows={5}
-                      placeholder='Update your text here!'
+                      placeholder='Add your text here!'
                     />
                   </div>
                   <div className='mt-4'>

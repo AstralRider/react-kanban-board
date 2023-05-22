@@ -1,38 +1,67 @@
-import { db } from './firebase'
 import {
-  doc,
   addDoc,
-  collection,
-  updateDoc,
-  deleteField,
-  getDoc,
-  deleteDoc,
-  writeBatch,
   arrayRemove,
   arrayUnion,
+  collection,
+  deleteDoc,
+  deleteField,
+  doc,
+  getDoc,
+  updateDoc,
+  writeBatch,
 } from 'firebase/firestore'
+
+import { db } from './firebase'
 import { v4 as uuidv4 } from 'uuid'
 
 // add a column
-export async function addColumn(uid: string, boardId: string, columnName?: string): Promise<void> {
+export async function addColumn(uid: string, boardId: string, columnName: string): Promise<void> {
+  const batch = writeBatch(db)
   const newId = uuidv4()
+  console.log(columnName)
   const boardRef = doc(db, 'users', uid, 'boards', boardId)
-  const update = updateDoc(boardRef, {
+  batch.update(boardRef, {
     ['columns.' + newId]: {
       id: newId,
-      title: 'The second column',
-      cardIds: [],
+      title: columnName,
+      taskIds: [],
     },
   })
-  promiseHandler<void>(update)
+  batch.update(boardRef, {
+    columnOrder: arrayUnion(newId),
+  })
+  await batch.commit()
 }
 
 //delete a column
 export async function deleteColumn(uid: string, boardId: string, columnId: string): Promise<void> {
+  const batch = writeBatch(db)
   const boardRef = doc(db, 'users', uid, 'boards', boardId)
-  await updateDoc(boardRef, {
-    ['columns.' + columnId]: deleteField(),
-  })
+  const docSnap = await getDoc(boardRef)
+  const ids = docSnap.get('columns.' + columnId + '.taskIds')
+  //add if check if col has no tasks in it
+  if (ids.length != 0) {
+    ids.forEach((id: string) => {
+      batch.update(boardRef, {
+        ['cards.' + id]: deleteField(),
+      })
+      batch.update(boardRef, {
+        ['columns.' + columnId]: deleteField(),
+      })
+      batch.update(boardRef, {
+        columnOrder: arrayRemove(columnId),
+      })
+      promiseHandler<void>(batch.commit())
+    })
+  } else {
+    batch.update(boardRef, {
+      ['columns.' + columnId]: deleteField(),
+    })
+    batch.update(boardRef, {
+      columnOrder: arrayRemove(columnId),
+    })
+    promiseHandler<void>(batch.commit())
+  }
 }
 
 // update a column name
@@ -156,8 +185,9 @@ export async function promiseHandler<T>(promise: Promise<T>) {
   } catch (error: unknown) {
     if (error instanceof Error) {
       err = error.message
-      console.log(err)
+      console.log('Error message: ' + err)
     }
   }
+
   return { result, err }
 }

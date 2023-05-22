@@ -1,6 +1,7 @@
 import { cardType, columnType } from '../dataModel'
 
 import { AiOutlineEdit } from 'react-icons/ai'
+import { FiTrash2 } from 'react-icons/fi'
 import { IoMdAdd } from 'react-icons/io'
 import Modal from './Modal'
 import { StrictModeDroppable } from './Droppable'
@@ -15,6 +16,7 @@ const Column = ({
   updateTasks,
   deleteTasks,
   addTasks,
+  deleteCol,
   updateColName,
 }: {
   column: columnType
@@ -23,6 +25,7 @@ const Column = ({
   deleteTasks: (cardId: string, colId: string) => void
   addTasks: (colId: string, content: string) => void
   updateColName: (colId: string, content: string) => void
+  deleteCol: (colId: string) => void
 }) => {
   let [isOpen, setIsOpen] = useState(false)
   let [header, setHeader] = useState(false)
@@ -36,8 +39,15 @@ const Column = ({
       </Modal>
       <div className='mb-3 flex items-center justify-center gap-2 rounded-md pt-2'>
         <div className='flex w-9/12 text-center text-sm font-bold'>{column.title}</div>
-        <div className=' flex w-2/12 justify-end text-lg'>
-          <AiOutlineEdit onClick={() => setHeader(true)} className='hover:cursor-pointer' />
+        <div className=' flex w-2/12 justify-end gap-1.5 text-lg'>
+          <FiTrash2
+            onClick={() => deleteCol(column.id)}
+            className='hover:cursor-pointer hover:text-blue-600'
+          />
+          <AiOutlineEdit
+            onClick={() => setHeader(true)}
+            className='hover:cursor-pointer hover:text-blue-600'
+          />
         </div>
         <Modal
           isOpen={header}
@@ -51,7 +61,7 @@ const Column = ({
       <StrictModeDroppable droppableId={column.id}>
         {(provided) => (
           <div className='m-2' ref={provided.innerRef} {...provided.droppableProps}>
-            {cards.map((tasks, index) => (
+            {cards?.map((tasks, index) => (
               <Task
                 key={tasks.id}
                 index={index}
