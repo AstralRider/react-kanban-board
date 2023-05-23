@@ -72,7 +72,7 @@ const Task = ({
   }
 
   return (
-    <Draggable draggableId={task.id} index={index}>
+    <Draggable draggableId={task.id} index={index} isDragDisabled={showTextArea}>
       {(provided) => (
         <div ref={taskRef}>
           <div
