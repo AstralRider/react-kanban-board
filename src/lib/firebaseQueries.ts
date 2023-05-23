@@ -18,7 +18,6 @@ import { v4 as uuidv4 } from 'uuid'
 export async function addColumn(uid: string, boardId: string, columnName: string): Promise<void> {
   const batch = writeBatch(db)
   const newId = uuidv4()
-  console.log(columnName)
   const boardRef = doc(db, 'users', uid, 'boards', boardId)
   batch.update(boardRef, {
     ['columns.' + newId]: {
