@@ -34,13 +34,13 @@ export async function addColumn(uid: string, boardId: string, columnName: string
 
 //delete a column
 export async function deleteColumn(uid: string, boardId: string, columnId: string): Promise<void> {
-  const batch = writeBatch(db)
   const boardRef = doc(db, 'users', uid, 'boards', boardId)
   const docSnap = await getDoc(boardRef)
   const ids = docSnap.get('columns.' + columnId + '.taskIds')
   //add if check if col has no tasks in it
   if (ids.length != 0) {
-    ids.forEach((id: string) => {
+    let batch = writeBatch(db)
+    ids.map(async (id: string) => {
       batch.update(boardRef, {
         ['cards.' + id]: deleteField(),
       })
@@ -50,16 +50,19 @@ export async function deleteColumn(uid: string, boardId: string, columnId: strin
       batch.update(boardRef, {
         columnOrder: arrayRemove(columnId),
       })
-      promiseHandler<void>(batch.commit())
     })
+    //move commit outside loop otherwise batch is trying to be called multiple times
+    promiseHandler(batch.commit())
   } else {
+    //if the col has no tasks inside it
+    let batch = writeBatch(db)
     batch.update(boardRef, {
       ['columns.' + columnId]: deleteField(),
     })
     batch.update(boardRef, {
       columnOrder: arrayRemove(columnId),
     })
-    promiseHandler<void>(batch.commit())
+    promiseHandler(batch.commit())
   }
 }
 
@@ -73,6 +76,14 @@ export async function updateColumnName(
   const boardRef = doc(db, 'users', uid, 'boards', boardId)
   await updateDoc(boardRef, {
     ['columns.' + columnId + '.title']: newName,
+  })
+}
+
+//update col order for horizontal dragging
+export async function updateColumnOrder(uid: string, boardId: string, newColOrder: string[]) {
+  const boardRef = doc(db, 'users', uid, 'boards', boardId)
+  await updateDoc(boardRef, {
+    columnOrder: newColOrder,
   })
 }
 
