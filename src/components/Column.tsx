@@ -41,7 +41,7 @@ const Column = ({
         <div
           {...provided.draggableProps}
           ref={provided.innerRef}
-          className='h-fit w-80 rounded-md bg-gray-100  shadow-md'
+          className='mx-2 h-fit w-80 rounded-md bg-gray-100 shadow-md'
         >
           <Modal isOpen={isOpen} setIsOpen={setIsOpen} colId={column.id} addTasks={addTasks}>
             Add a Card
