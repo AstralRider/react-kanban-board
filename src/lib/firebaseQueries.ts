@@ -39,7 +39,7 @@ export async function deleteColumn(uid: string, boardId: string, columnId: strin
   const ids = docSnap.get('columns.' + columnId + '.taskIds')
   //add if check if col has no tasks in it
   if (ids.length != 0) {
-    let batch = writeBatch(db)
+    const batch = writeBatch(db)
     ids.map(async (id: string) => {
       batch.update(boardRef, {
         ['cards.' + id]: deleteField(),
@@ -55,7 +55,7 @@ export async function deleteColumn(uid: string, boardId: string, columnId: strin
     promiseHandler(batch.commit())
   } else {
     //if the col has no tasks inside it
-    let batch = writeBatch(db)
+    const batch = writeBatch(db)
     batch.update(boardRef, {
       ['columns.' + columnId]: deleteField(),
     })

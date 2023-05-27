@@ -1,8 +1,9 @@
+import React, { Route, Router, Routes } from 'react-router-dom'
+
+import ApplicationPage from './pages/ApplicationPage'
 import LandingPage from './pages/LandingPage'
-import { Routes, Route, Router } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import PrivateRoute from './Routes/PrivateRoute'
-import ApplicationPage from './pages/ApplicationPage'
 
 function App() {
   return (
