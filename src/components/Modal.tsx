@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react'
 
 import React from 'react'
 
-export default function MyModal({
+function MyModal({
   isOpen,
   setIsOpen,
   colId,
@@ -103,3 +103,4 @@ export default function MyModal({
     </>
   )
 }
+export default MyModal

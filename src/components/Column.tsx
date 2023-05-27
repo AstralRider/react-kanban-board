@@ -1,3 +1,6 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react'
 import { cardType, columnType } from '../dataModel'
 
 import { AiOutlineEdit } from 'react-icons/ai'
@@ -7,7 +10,6 @@ import { IoMdAdd } from 'react-icons/io'
 import Modal from './Modal'
 import { StrictModeDroppable } from './Droppable'
 import Task from './Task'
-import { useState } from 'react'
 
 type cardArray = cardType[]
 
@@ -30,11 +32,12 @@ const Column = ({
   deleteCol: (colId: string) => void
   index: number
 }) => {
-  let [isOpen, setIsOpen] = useState(false)
-  let [header, setHeader] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [header, setHeader] = useState(false)
   function openModal() {
     setIsOpen(true)
   }
+
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided) => (
@@ -73,18 +76,19 @@ const Column = ({
           <StrictModeDroppable droppableId={column.id} type='tasks'>
             {(provided) => (
               <div className='m-2' ref={provided.innerRef} {...provided.droppableProps}>
-                {cards?.map((tasks, index) => (
+                <div className='mb-2' />
+
+                {cards?.map((task, index) => (
                   <Task
-                    key={tasks.id}
+                    key={task.id}
                     index={index}
-                    task={tasks}
+                    task={task}
                     updateTasks={updateTasks}
                     deleteTasks={deleteTasks}
                     colId={column.id}
                   />
                 ))}
 
-                <div className='mb-2' />
                 {provided.placeholder}
               </div>
             )}

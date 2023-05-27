@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
+
 import Button from './Button'
 import { RiMap2Fill } from 'react-icons/ri'
 

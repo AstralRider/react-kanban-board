@@ -1,5 +1,6 @@
-import classNames from 'classnames'
+import React from 'react'
 import { buttonTypes } from '../types/types'
+import classNames from 'classnames'
 
 const Button = ({
   subtle,

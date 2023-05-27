@@ -1,10 +1,11 @@
-import { FcGoogle } from 'react-icons/fc'
+import React, { useContext, useEffect } from 'react'
+
 import { AiFillGithub } from 'react-icons/ai'
-import { ImFacebook2 } from 'react-icons/im'
-import { useContext, useEffect } from 'react'
 import AuthenticationContext from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { FcGoogle } from 'react-icons/fc'
+import { ImFacebook2 } from 'react-icons/im'
 import { authTypes } from '../types/types'
+import { useNavigate } from 'react-router-dom'
 
 const LoginPage = () => {
   const { googleSignIn, user, githubSignIn } = useContext(AuthenticationContext) as authTypes

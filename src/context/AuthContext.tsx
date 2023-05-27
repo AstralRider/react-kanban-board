@@ -7,7 +7,7 @@ import {
   signOut,
 } from 'firebase/auth'
 import { authTypes, providerType } from '../types/types'
-import { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 import { User as FirebaseUser } from 'firebase/auth'
 import { auth } from '../lib/firebase'
@@ -22,7 +22,7 @@ export const Provider = ({ children }: providerType) => {
 
   //listen for auth state changes
   useEffect(() => {
-    let unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser)
       }
@@ -47,7 +47,7 @@ export const Provider = ({ children }: providerType) => {
     signOut(auth)
   }
 
-  let value = { googleSignIn, user, logOut, githubSignIn, uid }
+  const value = { googleSignIn, user, logOut, githubSignIn, uid }
 
   return <AuthenticationContext.Provider value={value}>{children}</AuthenticationContext.Provider>
 }
