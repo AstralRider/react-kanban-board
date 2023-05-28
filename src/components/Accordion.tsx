@@ -1,11 +1,11 @@
+import { NavLink, useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 
 import Button from './Button'
 import { RiMap2Fill } from 'react-icons/ri'
 
 type itemsType = {
-  name: string
-  content: string[]
+  [key: string]: { id: string; name: string }
 }
 
 const SingleAccordion = ({ items }: { items: itemsType[] }) => {
@@ -15,17 +15,22 @@ const SingleAccordion = ({ items }: { items: itemsType[] }) => {
     setIsopen(!isOpen)
   }
 
-  const renderedList = items.map((item) => {
-    return item.content.map((content, idx) => {
-      return (
-        <p
-          key={idx}
-          className='cursor-pointer rounded-md px-2.5 py-1 text-blue-600 hover:bg-gray-400/40 active:translate-y-0.5'
-        >
-          {content}
-        </p>
-      )
-    })
+  const { id } = useParams()
+
+  const list = items.flatMap((x) => {
+    return Object.values(x)
+  })
+
+  const renderedList = list.map((x) => {
+    return (
+      <NavLink
+        to={`app/${x.id}`}
+        key={x.id}
+        className='flex shrink-0 grow-0 cursor-pointer overflow-hidden whitespace-nowrap rounded-md px-2.5 py-1 text-blue-600 hover:bg-gray-400/40 active:translate-y-0.5'
+      >
+        {x.name}
+      </NavLink>
+    )
   })
 
   return (
@@ -47,8 +52,10 @@ const SingleAccordion = ({ items }: { items: itemsType[] }) => {
         Boards
       </Button>
       <div
-        className={` w-full overflow-hidden rounded-md px-4 duration-300 ease-in ${
-          isOpen ? 'max-h-80 bg-gray-300' : 'max-h-0 opacity-0 duration-300 ease-out'
+        className={` w-full overflow-hidden rounded-md px-4 py-2 duration-300 ease-in ${
+          isOpen
+            ? 'max-h-80 bg-gray-300'
+            : 'max-h-0 overflow-hidden opacity-0 duration-300 ease-out'
         }`}
       >
         {renderedList}
