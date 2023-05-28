@@ -131,30 +131,34 @@ const AppComponent = () => {
 
   return (
     <>
-      <MyModal isOpen={modalOpen} setIsOpen={setModalOpen} createColumn={createColumn}>
-        Add a column name
-      </MyModal>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <StrictModeDroppable droppableId='columns' direction='horizontal' type='column'>
-          {(provided) => (
-            <>
-              <div>
-                <div {...provided.droppableProps} ref={provided.innerRef} className='m-5 flex'>
-                  {columnList}
+      <div className={`flex min-h-screen grow bg-gray-300`}>
+        <div className='mx-10 my-5 h-screen w-full rounded-md '>
+          <MyModal isOpen={modalOpen} setIsOpen={setModalOpen} createColumn={createColumn}>
+            Add a column name
+          </MyModal>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <StrictModeDroppable droppableId='columns' direction='horizontal' type='column'>
+              {(provided) => (
+                <>
+                  <div>
+                    <div {...provided.droppableProps} ref={provided.innerRef} className='m-5 flex'>
+                      {columnList}
 
-                  <div className=''>{provided.placeholder} </div>
-                  <button
-                    onClick={() => setModalOpen(true)}
-                    className='flex-0 h-10 cursor-pointer rounded-md bg-gray-400/20 px-5 py-1 text-blue-600 hover:bg-gray-400/40 active:translate-y-0.5'
-                  >
-                    Add Column +
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-        </StrictModeDroppable>
-      </DragDropContext>
+                      <div className=''>{provided.placeholder} </div>
+                      <button
+                        onClick={() => setModalOpen(true)}
+                        className='flex-0 h-10 cursor-pointer whitespace-nowrap rounded-md bg-gray-400/20 px-5 py-1 text-blue-600 hover:bg-gray-400/40 active:translate-y-0.5'
+                      >
+                        Add Column +
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </StrictModeDroppable>
+          </DragDropContext>
+        </div>
+      </div>
     </>
   )
 }
