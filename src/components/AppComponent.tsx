@@ -20,24 +20,27 @@ import { StrictModeDroppable } from './Droppable'
 import { authTypes } from '../types/types'
 import { db } from '../lib/firebase'
 import { useAuth } from '../context/AuthContext'
+import { useLocation } from 'react-router-dom'
 
 const AppComponent = () => {
   const [boardState, setBoard] = useState<DocumentData>()
+  const [docId, setDocId] = useState<string | null>(null)
   const { user } = useAuth() as authTypes
   const [modalOpen, setModalOpen] = useState(false)
 
-  useEffect(() => {
-    const snapshot = onSnapshot(
-      doc(db, 'users', `${user?.uid}`, 'boards', '7s9YSlDnF5RvIv2v4mnf'),
-      (doc) => {
-        setBoard(doc.data())
-      },
-    )
+  const location = useLocation()
 
+  const boardId = location.state.locationId
+
+  useEffect(() => {
+    const snapshot = onSnapshot(doc(db, 'users', `${user?.uid}`, 'boards', `${boardId}`), (doc) => {
+      setBoard(doc.data())
+    })
     return () => {
       snapshot()
     }
-  }, [])
+  }, [boardId])
+
 
   function updateTasks(id: string, value: string): void {
     updateCardContent(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', id, value)
@@ -101,10 +104,13 @@ const AppComponent = () => {
     //Check where it finishes
     const finishColumn = boardState?.columns[destination.droppableId]
 
-    if (startColumn === finishColumn && type === 'task') {
+    if (startColumn === finishColumn && type === 'tasks') {
       const newList: string[] = Array.from(startColumn?.taskIds)
+
       newList.splice(source.index, 1)
+
       newList.splice(destination.index, 0, draggableId)
+
       updateTasksSingleColumn(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', start, newList)
     } else if (type === 'column') {
       const updateColOrder: string[] = Array.from(boardState?.columnOrder)

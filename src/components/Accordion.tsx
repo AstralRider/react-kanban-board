@@ -1,4 +1,4 @@
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, useParams, useSearchParams } from 'react-router-dom'
 import React, { useState } from 'react'
 
 import Button from './Button'
@@ -15,18 +15,23 @@ const SingleAccordion = ({ items }: { items: itemsType[] }) => {
     setIsopen(!isOpen)
   }
 
-  const { id } = useParams()
-
   const list = items.flatMap((x) => {
     return Object.values(x)
   })
 
+  const baseNavStyle =
+    'flex shrink-0 grow-0 cursor-pointer overflow-hidden whitespace-nowrap rounded-md px-2.5 py-1  hover:bg-gray-400/40 active:translate-y-0.5'
+
   const renderedList = list.map((x) => {
     return (
       <NavLink
-        to={`app/${x.id}`}
+        to={`id=${x.id}`}
         key={x.id}
-        className='flex shrink-0 grow-0 cursor-pointer overflow-hidden whitespace-nowrap rounded-md px-2.5 py-1 text-blue-600 hover:bg-gray-400/40 active:translate-y-0.5'
+        className={({ isActive }) =>
+          isActive ? `${baseNavStyle} + text-blue-600` : `${baseNavStyle} + text-gray-600`
+        }
+        end
+        state={{ locationId: x.id }}
       >
         {x.name}
       </NavLink>
@@ -59,6 +64,9 @@ const SingleAccordion = ({ items }: { items: itemsType[] }) => {
         }`}
       >
         {renderedList}
+        <Button className='px-2.5 py-1 text-left text-gray-500 hover:bg-gray-400/40'>
+          Add a board +
+        </Button>
       </div>
     </div>
   )
