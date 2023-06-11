@@ -21,10 +21,9 @@ const NavBar = () => {
     setRefetch(false)
     const returnBoards = async () => {
       const res = await getBoards(`${user?.uid}`)
-      console.log('...Getting user boards')
       setBoardNames(res)
     }
-    console.log(refetch)
+
     returnBoards()
   }, [refetch])
 
