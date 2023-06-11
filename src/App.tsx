@@ -1,3 +1,4 @@
+import React, { Suspense, lazy } from 'react'
 import {
   Route,
   RouterProvider,
@@ -5,17 +6,17 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom'
 
-import AppComponent from './components/AppComponent'
-import LandingPage from './pages/LandingPage'
-import LoginPage from './pages/LoginPage'
-import NavBar from './components/NavBar'
 import PrivateRoute from './Routes/PrivateRoute'
-import React from 'react'
+
+const AppComponent = lazy(() => import('./components/AppComponent'))
+const LoginPage = lazy(() => import('./pages/LoginPage'))
+const LandingPage = lazy(() => import('./pages/LandingPage'))
+const NavBar = lazy(() => import('./components/NavBar'))
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path='/' element={<LandingPage />} />
+      <Route path='home' element={<LandingPage />} />
       <Route path='login' element={<LoginPage />} />
       <Route element={<PrivateRoute />}>
         <Route element={<NavBar />} path='app'>
@@ -27,7 +28,11 @@ const router = createBrowserRouter(
 )
 
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <RouterProvider router={router} />
+    </Suspense>
+  )
 }
 
 export default App
