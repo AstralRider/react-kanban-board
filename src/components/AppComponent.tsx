@@ -20,18 +20,16 @@ import { StrictModeDroppable } from './Droppable'
 import { authTypes } from '../types/types'
 import { db } from '../lib/firebase'
 import { useAuth } from '../context/AuthContext'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 const AppComponent = () => {
   const [boardState, setBoard] = useState<DocumentData>()
-  const [docId, setDocId] = useState<string | null>(null)
   const { user } = useAuth() as authTypes
   const [modalOpen, setModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const location = useLocation()
-
-  const boardId = location.state.locationId
+  const { id } = useParams()
+  const boardId = id?.split('=')[1]
 
   useEffect(() => {
     setLoading(true)
