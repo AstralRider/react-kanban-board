@@ -16,7 +16,7 @@ const NavBar = lazy(() => import('./components/NavBar'))
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path='home' element={<LandingPage />} />
+      <Route path='/' element={<LandingPage />} />
       <Route path='login' element={<LoginPage />} />
       <Route element={<PrivateRoute />}>
         <Route element={<NavBar />} path='app'>
