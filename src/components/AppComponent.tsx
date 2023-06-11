@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { DocumentData, doc, onSnapshot } from 'firebase/firestore'
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import {
   addCard,
   addColumn,
@@ -27,66 +27,72 @@ const AppComponent = () => {
   const [docId, setDocId] = useState<string | null>(null)
   const { user } = useAuth() as authTypes
   const [modalOpen, setModalOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const location = useLocation()
 
   const boardId = location.state.locationId
 
   useEffect(() => {
+    setLoading(true)
     const snapshot = onSnapshot(doc(db, 'users', `${user?.uid}`, 'boards', `${boardId}`), (doc) => {
       setBoard(doc.data())
     })
+    setLoading(false)
     return () => {
       snapshot()
     }
   }, [boardId])
 
-
   function updateTasks(id: string, value: string): void {
-    updateCardContent(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', id, value)
+    updateCardContent(`${user?.uid}`, `${boardId}`, id, value)
   }
 
   function deleteTasks(cardId: string, colId: string) {
-    deleteCard(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', cardId, colId)
+    deleteCard(`${user?.uid}`, `${boardId}`, cardId, colId)
   }
 
   function addTasks(colId: string, content: string) {
-    addCard(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', content, colId)
+    addCard(`${user?.uid}`, `${boardId}`, content, colId)
   }
 
   function updateColName(colId: string, content: string) {
-    updateColumnName(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', colId, content)
+    updateColumnName(`${user?.uid}`, `${boardId}`, colId, content)
   }
 
   function createColumn(colName: string) {
-    addColumn(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', colName)
+    addColumn(`${user?.uid}`, `${boardId}`, colName)
   }
 
   function deleteCol(colId: string) {
-    deleteColumn(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', colId)
+    deleteColumn(`${user?.uid}`, `${boardId}`, colId)
   }
 
-  const columnList = boardState?.columnOrder.map((columnId: string, index: number) => {
-    const column = boardState.columns[columnId]
+  let columnList: ReactNode
 
-    const tasks = column.taskIds?.map((taskId: string) => {
-      return boardState.cards[taskId]
+  if (boardState?.columnOrder && !loading) {
+    columnList = boardState?.columnOrder.map((columnId: string, index: number) => {
+      const column = boardState.columns[columnId]
+
+      const tasks = column.taskIds?.map((taskId: string) => {
+        return boardState.cards[taskId]
+      })
+
+      return (
+        <Column
+          deleteTasks={deleteTasks}
+          updateTasks={updateTasks}
+          addTasks={addTasks}
+          updateColName={updateColName}
+          deleteCol={deleteCol}
+          key={column.id}
+          column={column}
+          cards={tasks}
+          index={index}
+        />
+      )
     })
-
-    return (
-      <Column
-        deleteTasks={deleteTasks}
-        updateTasks={updateTasks}
-        addTasks={addTasks}
-        updateColName={updateColName}
-        deleteCol={deleteCol}
-        key={column.id}
-        column={column}
-        cards={tasks}
-        index={index}
-      />
-    )
-  })
+  }
 
   const onDragEnd = (result: any) => {
     const { destination, source, draggableId, type } = result
@@ -111,12 +117,12 @@ const AppComponent = () => {
 
       newList.splice(destination.index, 0, draggableId)
 
-      updateTasksSingleColumn(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', start, newList)
+      updateTasksSingleColumn(`${user?.uid}`, `${boardId}`, start, newList)
     } else if (type === 'column') {
       const updateColOrder: string[] = Array.from(boardState?.columnOrder)
       updateColOrder.splice(source.index, 1)
       updateColOrder.splice(destination.index, 0, draggableId)
-      updateColumnOrder(`${user?.uid}`, '7s9YSlDnF5RvIv2v4mnf', updateColOrder)
+      updateColumnOrder(`${user?.uid}`, `${boardId}`, updateColOrder)
     } else {
       const startIds: string[] = Array.from(startColumn.taskIds)
       startIds.splice(source.index, 1)
@@ -124,17 +130,12 @@ const AppComponent = () => {
       const finishIds: string[] = Array.from(finishColumn.taskIds)
       finishIds.splice(destination.index, 0, draggableId)
 
-      updateTaskIdsBetweenColumns(
-        `${user?.uid}`,
-        '7s9YSlDnF5RvIv2v4mnf',
-        start,
-        startIds,
-        finish,
-        finishIds,
-      )
+      updateTaskIdsBetweenColumns(`${user?.uid}`, `${boardId}`, start, startIds, finish, finishIds)
     }
   }
-
+  if (loading) {
+    return <h1>Loading...</h1>
+  }
   return (
     <>
       <div className={`flex min-h-screen grow bg-gray-300`}>
