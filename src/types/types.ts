@@ -6,6 +6,7 @@ export type authTypes = {
   logOut: () => void
   githubSignIn: () => Promise<{ result: UserCredential | undefined; err: string | undefined }>
   uid: string | undefined
+  loading: boolean
 }
 
 export type providerType = {

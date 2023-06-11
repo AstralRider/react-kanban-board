@@ -10,6 +10,7 @@ function MyModal({
   addTasks,
   updateColName,
   createColumn,
+  createBoard,
   children,
 }: {
   isOpen: boolean
@@ -18,6 +19,7 @@ function MyModal({
   addTasks?: (colId: string, content: string) => void
   updateColName?: (colId: string, content: string) => void
   createColumn?: (colName: string) => void
+  createBoard?: (boardName: string) => void
   children: React.ReactNode
 }) {
   const [content, setContent] = useState<string>('')
@@ -39,6 +41,8 @@ function MyModal({
       updateColName(colId!, content)
     } else if (createColumn) {
       createColumn(content)
+    } else if (createBoard) {
+      createBoard(content)
     }
     setIsOpen(false)
     setContent('')

@@ -16,11 +16,10 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path='/' element={<LandingPage />} />
-      <Route path='/login' element={<LoginPage />} />
+      <Route path='login' element={<LoginPage />} />
       <Route element={<PrivateRoute />}>
         <Route element={<NavBar />} path='app'>
           <Route element={<AppComponent />} path=':id' />
-          {/* <Route element={<AppComponent />} path='app/:id' /> */}
         </Route>
       </Route>
     </Route>,
@@ -32,3 +31,6 @@ function App() {
 }
 
 export default App
+{
+  /* <Route element={<AppComponent />} path='app/:id' /> */
+}

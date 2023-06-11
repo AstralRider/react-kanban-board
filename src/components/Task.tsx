@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { RxCheck, RxCross2 } from 'react-icons/rx'
 
 import { AiOutlineEdit } from 'react-icons/ai'

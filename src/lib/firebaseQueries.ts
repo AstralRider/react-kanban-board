@@ -7,6 +7,7 @@ import {
   deleteField,
   doc,
   getDoc,
+  getDocs,
   updateDoc,
   writeBatch,
 } from 'firebase/firestore'
@@ -102,6 +103,20 @@ export async function addBoard(uid: string, boardName: string) {
     cards: {},
     columns: {},
   })
+}
+
+//get boards obj
+export async function getBoards(uid: string) {
+  const { result } = await promiseHandler(getDocs(collection(db, 'users', uid, 'boards')))
+  const obj: objType = {}
+  const arr: objType[] = []
+  result?.forEach((doc) => {
+    const id: string = doc.id
+    const name: string = doc.get('boardName')
+    obj[id] = { id: id, name: name }
+  })
+  arr.push(obj)
+  return arr
 }
 
 //delete board
@@ -200,4 +215,11 @@ export async function promiseHandler<T>(promise: Promise<T>) {
   }
 
   return { result, err }
+}
+
+export type objType = {
+  [key: string]: {
+    id: string
+    name: string
+  }
 }
