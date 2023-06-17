@@ -31,8 +31,6 @@ const SingleAccordion = ({
     setIsopen(!isOpen)
   }
 
-  // console.log(boardNames)
-
   let list
 
   if (boardNames) {
