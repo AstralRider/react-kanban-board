@@ -1,9 +1,9 @@
+import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: 'react-trello-clone-64906.firebaseapp.com',
   projectId: 'react-trello-clone-64906',
