@@ -1,16 +1,16 @@
+import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyCjpKmTCMCD3Chzo39xrEWFjAb8R64ZpAE',
+export const firebaseConfig = {
+  apiKey: process.env.API_KEY,
   authDomain: 'react-trello-clone-64906.firebaseapp.com',
   projectId: 'react-trello-clone-64906',
   storageBucket: 'react-trello-clone-64906.appspot.com',
-  messagingSenderId: '599400032784',
-  appId: '1:599400032784:web:9395059e1c61006407b895',
-  measurementId: 'G-82PPZMZL4N',
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
+  measurementId: process.env.MEASUREMENT_ID,
 }
 
 // Initialize Firebase
