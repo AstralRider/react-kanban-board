@@ -4,13 +4,13 @@ import { getFirestore } from 'firebase/firestore'
 import { initializeApp } from 'firebase/app'
 
 export const firebaseConfig = {
-  apiKey: import.meta.env.API_KEY,
+  apiKey: import.meta.env.VITE_API_KEY,
   authDomain: 'react-trello-clone-64906.firebaseapp.com',
   projectId: 'react-trello-clone-64906',
   storageBucket: 'react-trello-clone-64906.appspot.com',
-  messagingSenderId: import.meta.env.MESSAGING_SENDER_ID,
-  appId: import.meta.env.APP_ID,
-  measurementId: import.meta.env.MEASUREMENT_ID,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 }
 
 // Initialize Firebase
