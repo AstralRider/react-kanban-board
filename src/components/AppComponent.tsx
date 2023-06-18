@@ -97,6 +97,7 @@ const AppComponent = () => {
 
     if (!destination) return
 
+    //if the user drops a card back in the same location
     if (destination.droppableId === source.droppableId && destination.index === source.index) return
 
     const start = source.droppableId

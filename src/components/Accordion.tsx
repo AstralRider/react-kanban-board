@@ -99,10 +99,10 @@ const SingleAccordion = ({
           Boards
         </Button>
         <div
-          className={` w-full overflow-hidden rounded-md px-4 py-2 duration-300 ease-in ${
+          className={` w-full  overflow-y-auto rounded-md px-4 py-2 duration-500 ease-in ${
             isOpen
-              ? 'max-h-80 bg-gray-300'
-              : 'max-h-0 overflow-hidden opacity-0 duration-300 ease-out'
+              ? 'max-h-80 bg-gray-300 duration-500'
+              : 'max-h-0 overflow-hidden opacity-0 duration-500 ease-out'
           }`}
         >
           {renderedList}

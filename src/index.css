@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  ::-webkit-scrollbar-thumb {
+    @apply bg-transparent shadow-sm;
+  }
+  ::-webkit-scrollbar {
+    @apply w-2 bg-transparent;
+    @apply h-2 bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply /*color trackbar*/ rounded-lg bg-gray-400;
+  }
+  html {
+    --tw-bg-opacity: 1;
+    background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+  }
+}
