@@ -19,9 +19,11 @@ type boardType = {
 const SingleAccordion = ({
   boardNames,
   fetch,
+  currentBoard,
 }: {
   boardNames: boardType[] | undefined
-  fetch: (status: boolean) => void
+  fetch: (status: boolean, location?: string) => void
+  currentBoard: string | undefined
 }) => {
   const [isOpen, setIsopen] = useState<boolean>(false)
   const { user } = useAuth() as authTypes
@@ -40,13 +42,17 @@ const SingleAccordion = ({
   }
 
   const baseNavStyle =
-    'flex shrink-0 grow-0 cursor-pointer overflow-hidden whitespace-nowrap rounded-md px-2.5 py-1  hover:bg-gray-400/40 active:translate-y-0.5 items-center justify-between'
+    'flex shrink-0 grow-0 cursor-pointer overflow-hidden whitespace-nowrap rounded-md px-2.5 py-1  hover:bg-gray-400/40 active:translate-y-0.5 items-center justify-between basis-10/12'
 
   let renderedList
 
   const removeBoard = async (boardId: string) => {
     await deleteBoard(`${user?.uid}`, boardId)
-    fetch(true)
+    if (currentBoard === boardId) {
+      return fetch(true, '/app')
+    } else {
+      return fetch(true)
+    }
   }
 
   const createBoard = async (boardName: string) => {
@@ -57,7 +63,7 @@ const SingleAccordion = ({
   if (list) {
     renderedList = list.map((board) => {
       return (
-        <div className='relative' key={board.id}>
+        <div className='relative flex items-center' key={board.id}>
           <NavLink
             to={`id=${board.id}`}
             key={board.id}
@@ -68,12 +74,11 @@ const SingleAccordion = ({
             state={{ locationId: board.id }}
           >
             <p className='overflow-hidden text-ellipsis'>{board.name}</p>
-
-            <FiTrash2
-              className='absolute right-0 hover:scale-125'
-              onClick={() => removeBoard(board.id)}
-            />
           </NavLink>
+          <FiTrash2
+            className='absolute right-0 basis-2/12 hover:scale-125'
+            onClick={() => removeBoard(board.id)}
+          />
         </div>
       )
     })

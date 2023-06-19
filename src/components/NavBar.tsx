@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { getBoards, objType } from '../lib/FirebaseQueries'
 
@@ -13,7 +13,6 @@ const NavBar = () => {
   const [navOpen, setIsNavOpen] = useState(true)
   const [boardNames, setBoardNames] = useState<objType[] | undefined>()
   const [refetch, setRefetch] = useState<boolean>(false)
-
   const navigate = useNavigate()
   const { user, logOut } = useAuth() as authTypes
 
@@ -36,9 +35,13 @@ const NavBar = () => {
     navigate('../login')
   }
 
-  const fetch = (status: boolean) => {
+  const fetch = (status: boolean, location?: string) => {
     setRefetch(status)
+    location ? navigate(location) : null
   }
+
+  const { id } = useParams()
+  const boardId = id?.split('=')[1]
 
   return (
     <>
@@ -61,7 +64,7 @@ const NavBar = () => {
             <Button active className='z-0 mx-2.5 text-blue-500 hover:bg-gray-300'>
               <IoIosSettings /> {user?.displayName}
             </Button>
-            <SingleAccordion boardNames={boardNames} fetch={fetch} />
+            <SingleAccordion boardNames={boardNames} fetch={fetch} currentBoard={boardId} />
             <button onClick={signUserOutFunction}>Log out</button>
           </div>
         </div>
